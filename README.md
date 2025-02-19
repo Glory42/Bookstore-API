@@ -1,4 +1,5 @@
-````bash 
+## Project Structure
+```bash 
 bookstore-api/  
 ├── .env                 # Environment variables (keep secrets here)
 ├── .env.example         # Example env file (template for users)
