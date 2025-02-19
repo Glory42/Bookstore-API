@@ -1,11 +1,12 @@
 const express = require('express');
 const bookRouter = express.Router();
+const { getAllBook, createBook, updateBook, deleteBook, getAbook } = require('../controllers/bookController');
+const authMiddleware = require('../middleware/auth');
+const isAdmin = require('../middleware/isAdmin');
+const books = require('../config/db');
 
-let books = [
-    { id: 0, title: 'Lord Of The Rings: Fellowship Of The Ring', Status: 'Here' },
-    { id: 1, title: 'Dune', Status: 'Here' },
-    { id: 2, title: 'Hitchhikers Guide To The Galaxy', Status: 'Sold Out' },
-]
+
+
 
 // custome middleware find book by id
 bookRouter.param('id', (req, res, next, id) => {
@@ -16,39 +17,14 @@ bookRouter.param('id', (req, res, next, id) => {
     next();
 });
 
-bookRouter.get('/', (req, res) => {
-    res.send({
-        tilte: 'BookStore',
-        books,
-    });
-});
+bookRouter.get('/', getAllBook);
 
 
-bookRouter.post('/', (req, res) =>{
-    const {title} = req.body;
-    if(!title) return res.status(400).send('Title is required');
-    const newBook = {id: books.length + 1, title, status: 'Here'};
-    books.push(newBook);
-    res.redirect('/book');
-});
+bookRouter.post('/', authMiddleware, isAdmin, createBook);
 
 bookRouter.route('/:id')
-    .get((req, res) => {
-        res.send({book: req.book});
-    })
-    .put((req, res) => {
-        const updatedBook = {
-            id: req.book.id,
-            title: req.body.title || req.book.title,
-            Status: req.body.Status || req.book.Status
-        };
-        const bookIndex = books.findIndex(b => b.id === updatedBook.id);
-        books[bookIndex] = updatedBook;
-        res.redirect('/book');
-    })
-    .delete((req, res) => {
-        books = books.filter(b => b.id !== req.book.id);
-        res.redirect('/book');
-    });
+    .get(getAbook)
+    .put(authMiddleware, isAdmin, updateBook)
+    .delete(authMiddleware, isAdmin, deleteBook);
 
 module.exports = bookRouter;
