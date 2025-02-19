@@ -4,7 +4,9 @@ const app = express();
 const morgan = require('morgan');
 require('dotenv').config();
 
+// middleware
 app.use(morgan('dev'));
+app.use(express.json());
 
 
 app.get('/', (req, res) => {
