@@ -22,7 +22,8 @@ bookstore-api/
 │
 ├── middleware/          # Custom middleware
 │   ├── auth.js          # Authentication middleware
-│   └── errorHandler.js  # Global error handling
+│   ├── errorHandler.js  # Global error handling
+│   └── isAdmin.js       # Checking admin
 │
 └── utils/               # Helper functions (optional)
     └── logger.js        # Logging utility
