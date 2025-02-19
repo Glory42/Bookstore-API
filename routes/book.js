@@ -40,7 +40,7 @@ bookRouter.route('/:id')
         const updatedBook = {
             id: req.book.id,
             title: req.body.title || req.book.title,
-            status: req.body.status || req.body.status
+            Status: req.body.Status || req.book.Status
         };
         const bookIndex = books.findIndex(b => b.id === updatedBook.id);
         books[bookIndex] = updatedBook;
